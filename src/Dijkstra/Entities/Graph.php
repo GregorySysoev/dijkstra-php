@@ -40,10 +40,10 @@ class Graph
         unset($this->points[$pointName]);
     }
 
-    public function printGraph(): string
+    public function print(): string
     {
         $countOfPoints = count($this->points);
-        $result = "Всего в графе {$countOfPoints} вершин" . PHP_EOL;
+        $result = "Всего в графе вершин: {$countOfPoints}" . PHP_EOL;
         foreach ($this->points as $key => $roads) {
             $result .= "'{$key}': ";
             foreach ($roads as $way => $distance) {
@@ -57,12 +57,12 @@ class Graph
     public function bindPoints(string $pointFrom, string $pointTo, int $distance): void
     {
         if ($distance <= 1) {
-            throw new \InvalidArgumentException('Расстояния между вершинами должно быть не менее 1');
+            throw new \InvalidArgumentException('Расстояние между вершинами должно быть не менее 1');
         }
 
         $this->validatePoints($pointFrom, $pointTo);
 
-        $this->points[$pointFrom][$pointFrom] = $distance;
+        $this->points[$pointFrom][$pointTo] = $distance;
     }
 
     public function unbindPoints(string $pointFrom, string $pointTo): void
@@ -78,7 +78,7 @@ class Graph
     private function validatePoints(string $pointFrom, string $pointTo)
     {
         if ($pointFrom === $pointTo) {
-            throw new \InvalidArgumentException('Нельзя указывать одну и туже вершину для начала пути и конца');
+            throw new \InvalidArgumentException('Нельзя указывать одну и ту же вершину для начала пути и конца');
         }
 
         if (!isset($this->points[$pointFrom])) {
