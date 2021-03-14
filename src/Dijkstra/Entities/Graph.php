@@ -60,14 +60,14 @@ class Graph
             throw new \InvalidArgumentException('Расстояние между вершинами должно быть не менее 1');
         }
 
-        $this->validatePoints($pointFrom, $pointTo);
+        $this->validatePointToPointFrom($pointFrom, $pointTo);
 
         $this->points[$pointFrom][$pointTo] = $distance;
     }
 
     public function unbindPoints(string $pointFrom, string $pointTo): void
     {
-        $this->validatePoints($pointFrom, $pointTo);
+        $this->validatePointToPointFrom($pointFrom, $pointTo);
 
         if (!isset($this->points[$pointFrom][$pointTo])) {
             throw new \InvalidArgumentException("Не существует маршрута из {$pointFrom} в {$pointTo}");
@@ -75,18 +75,28 @@ class Graph
         unset($this->points[$pointFrom][$pointTo]);
     }
 
-    private function validatePoints(string $pointFrom, string $pointTo)
+    public function getPoints(): array
+    {
+        return $this->points;
+    }
+
+    public function validatePointToPointFrom(string $pointFrom, string $pointTo): void
     {
         if ($pointFrom === $pointTo) {
-            throw new \InvalidArgumentException('Нельзя указывать одну и ту же вершину для начала пути и конца');
+            throw new \InvalidArgumentException('Нельзя указывать одну и ту же вершину');
         }
 
-        if (!isset($this->points[$pointFrom])) {
+        if (!$this->graphContainsPoint($pointFrom)) {
             throw new \InvalidArgumentException("В графе нет вершины с названием {$pointFrom}");
         }
 
-        if (!isset($this->points[$pointTo])) {
+        if (!$this->graphContainsPoint($pointTo)) {
             throw new \InvalidArgumentException("В графе нет вершины с названием {$pointTo}");
         }
+    }
+
+    private function graphContainsPoint(string $point): bool
+    {
+        return isset($this->points[$point]);
     }
 }

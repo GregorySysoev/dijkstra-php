@@ -101,7 +101,7 @@ class GraphTest extends TestCase
     {
         $graph = new Graph();
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Нельзя указывать одну и ту же вершину для начала пути и конца');
+        $this->expectExceptionMessage('Нельзя указывать одну и ту же вершину');
 
         $pointFrom = 'Русский';
 
@@ -182,7 +182,7 @@ class GraphTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $pointFrom = $pointTo = 'Русский';
-        $this->expectExceptionMessage('Нельзя указывать одну и ту же вершину для начала пути и конца');
+        $this->expectExceptionMessage('Нельзя указывать одну и ту же вершину');
 
         $graph->addToGraph($pointTo);
         $graph->unbindPoints($pointTo, $pointFrom);
