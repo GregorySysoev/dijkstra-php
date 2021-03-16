@@ -19,7 +19,7 @@ class Dijkstra
 
     public function getShortestPath(string $pointFrom, string $pointTo): string
     {
-        $this->graph->validatePointToPointFrom($pointFrom, $pointTo);
+        $this->graph->validatePoint1Point2($pointFrom, $pointTo);
 
         // массив кратчайших путей к каждому узлу
         $shortestPointRoutes = [];

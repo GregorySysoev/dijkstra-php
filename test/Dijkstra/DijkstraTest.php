@@ -55,21 +55,6 @@ class DijkstraTest extends TestCase
         self::assertSame('5: F->D->A', $res);
     }
 
-    public function testShortestPath(): void
-    {
-        $graph = new Graph();
-
-        $graph->addToGraph('A');
-        $graph->addToGraph('B');
-
-        $graph->bindPoints('B', 'A', 1);
-        $graph->bindPoints('A', 'B', 2);
-
-        $dijkstra = new Dijkstra($graph);
-        $res = $dijkstra->getShortestPath('A', 'B');
-        self::assertSame('1: A->B', $res);
-    }
-
     public function testPointToNotFound(): void
     {
         $graph = new Graph();
@@ -112,8 +97,6 @@ class DijkstraTest extends TestCase
 
         $graph->addToGraph($point1);
         $graph->addToGraph($point2);
-
-        $graph->bindPoints($point2, $point1, 20);
 
         $dijkstra = new Dijkstra($graph);
         $dijkstra->getShortestPath($point1, $point2);
