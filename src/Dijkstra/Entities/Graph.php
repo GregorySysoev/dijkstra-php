@@ -29,7 +29,7 @@ class Graph
     public function deleteFromGraph(string $pointName): void
     {
         if (!isset($this->points[$pointName])) {
-            throw new \InvalidArgumentException('Вершина с данным названием отсутсвует в графе');
+            throw new \InvalidArgumentException("Вершина {$pointName} отсутсвует в графе");
         }
 
         foreach ($this->points as $key => $roads) {

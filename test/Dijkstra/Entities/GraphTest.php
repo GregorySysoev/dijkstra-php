@@ -47,11 +47,13 @@ class GraphTest extends TestCase
     public function testDeleteUncorrect(): void
     {
         $graph = new Graph();
+        $pointNotFound = 'Остров Попова';
+
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Вершина с данным названием отсутсвует в графе');
+        $this->expectExceptionMessage("Вершина {$pointNotFound} отсутсвует в графе");
 
         $graph->addToGraph('Русский');
-        $graph->deleteFromGraph('Остров Попова');
+        $graph->deleteFromGraph($pointNotFound);
     }
 
     public function testBindPointsCorrect(): void
@@ -92,7 +94,6 @@ class GraphTest extends TestCase
         $graph->addToGraph($point2);
 
         $graph->bindPoints($point1, $point2, -1);
-
     }
 
     public function testBindPointsSamePoints(): void

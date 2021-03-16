@@ -23,25 +23,15 @@ class DijkstraTest extends TestCase
         $graph->addToGraph('F');
 
         $graph->bindPoints('A', 'B', 3);
-        $graph->bindPoints('B', 'A', 3);
         $graph->bindPoints('D', 'A', 3);
-        $graph->bindPoints('A', 'D', 3);
         $graph->bindPoints('F', 'A', 6);
-        $graph->bindPoints('A', 'F', 6);
         $graph->bindPoints('B', 'D', 1);
-        $graph->bindPoints('D', 'B', 1);
         $graph->bindPoints('B', 'E', 3);
-        $graph->bindPoints('E', 'B', 3);
         $graph->bindPoints('C', 'E', 2);
-        $graph->bindPoints('E', 'C', 2);
         $graph->bindPoints('C', 'F', 3);
-        $graph->bindPoints('F', 'C', 3);
         $graph->bindPoints('D', 'E', 1);
-        $graph->bindPoints('E', 'D', 1);
         $graph->bindPoints('D', 'F', 2);
-        $graph->bindPoints('F', 'D', 2);
         $graph->bindPoints('E', 'F', 5);
-        $graph->bindPoints('F', 'E', 5);
 
 
         $dijkstra = new Dijkstra($graph);
