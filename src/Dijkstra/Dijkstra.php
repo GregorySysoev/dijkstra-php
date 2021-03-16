@@ -41,13 +41,13 @@ class Dijkstra
 
         $shortestPointRoutes[$pointFrom] = 0;
 
-        while ($queries->isEmpty()) {
+        while (!$queries->isEmpty()) {
             $current = $queries->extract();
-            foreach ($this->graph[$current] as $point => $routes) {
-                $alt = $shortestPointRoutes[$current] + $routes;
+            foreach ($this->graph->getPoints()[$current] as $point => $distance) {
+                $alt = $shortestPointRoutes[$current] + $distance;
                 if ($alt < $shortestPointRoutes[$point]) {
                     $shortestPointRoutes[$point] = $alt;
-                    $previousRoutes[$point] = $current;
+                    $previousRoutes[$point] = $current; // добавим соседа как предшествующий этому узла
                 }
             }
         }
@@ -61,7 +61,7 @@ class Dijkstra
 
         while (isset($previousRoutes[$current])) {
             $stack->push($current);
-            $finalDistance += $this->graph[$current][$previousRoutes[$current]];
+            $finalDistance += $this->graph->getPoints()[$current][$previousRoutes[$current]];
             $current = $previousRoutes[$current];
         }
 

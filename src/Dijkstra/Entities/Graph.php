@@ -56,7 +56,7 @@ class Graph
 
     public function bindPoints(string $pointFrom, string $pointTo, int $distance): void
     {
-        if ($distance <= 1) {
+        if ($distance < 1) {
             throw new \InvalidArgumentException('Расстояние между вершинами должно быть не менее 1');
         }
 
