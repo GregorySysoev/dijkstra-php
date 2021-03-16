@@ -16,8 +16,8 @@ class GraphTest extends TestCase
     {
         $graph = new Graph();
 
-        $pointFrom = 'Русский';
-        $graph->addToGraph($pointFrom);
+        $point1 = 'Русский';
+        $graph->addToGraph($point1);
 
         $expectedValue = "Всего в графе вершин: 1\n'Русский': \n";
         $actualValue = $graph->print();
@@ -58,22 +58,20 @@ class GraphTest extends TestCase
     {
         $graph = new Graph();
 
-        $pointFrom = 'Русский';
-        $pointTo = 'Остров Попова';
+        $point1 = 'Русский';
+        $point2 = 'Остров Попова';
 
-        $graph->addToGraph($pointFrom);
-        $graph->addToGraph($pointTo);
+        $graph->addToGraph($point1);
+        $graph->addToGraph($point2);
 
-        $graph->bindPoints($pointFrom, $pointTo, 10);
-        $graph->bindPoints($pointFrom, $pointTo, 12);
-
-        $graph->bindPoints($pointTo, $pointFrom, 4);
+        $graph->bindPoints($point2, $point1, 4);
+        $graph->bindPoints($point1, $point2, 5);
 
         $actual = $graph->print();
         $expected = <<<EOT
         Всего в графе вершин: 2
-        '{$pointFrom}': '{$pointTo}' => 12 
-        '{$pointTo}': '{$pointFrom}' => 4 
+        '{$point1}': '{$point2}' => 5 
+        '{$point2}': '{$point1}' => 5 
         
         EOT;
 
@@ -87,13 +85,13 @@ class GraphTest extends TestCase
 
         $graph = new Graph();
 
-        $pointFrom = 'Русский';
-        $pointTo = 'Остров Попова';
+        $point1 = 'Русский';
+        $point2 = 'Остров Попова';
 
-        $graph->addToGraph($pointFrom);
-        $graph->addToGraph($pointTo);
+        $graph->addToGraph($point1);
+        $graph->addToGraph($point2);
 
-        $graph->bindPoints($pointFrom, $pointTo, -1);
+        $graph->bindPoints($point1, $point2, -1);
 
     }
 
@@ -103,58 +101,58 @@ class GraphTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Нельзя указывать одну и ту же вершину');
 
-        $pointFrom = 'Русский';
+        $point1 = 'Русский';
 
-        $graph->addToGraph($pointFrom);
+        $graph->addToGraph($point1);
 
-        $graph->bindPoints($pointFrom, $pointFrom, 10);
+        $graph->bindPoints($point1, $point1, 10);
     }
 
-    public function testBindPointsPointFromNotFound(): void
+    public function testBindPointsPoint1NotFound(): void
     {
         $graph = new Graph();
         $this->expectException(\InvalidArgumentException::class);
 
-        $notFoundPointFrom = 'Русский';
-        $pointTo = 'Остров Попова';
+        $notFoundPoint1 = 'Русский';
+        $point2 = 'Остров Попова';
 
-        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPointFrom}");
+        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPoint1}");
 
-        $graph->addToGraph($pointTo);
-        $graph->bindPoints($notFoundPointFrom, $pointTo, 10);
+        $graph->addToGraph($point2);
+        $graph->bindPoints($notFoundPoint1, $point2, 10);
     }
 
-    public function testBindPointsPointToNotFound(): void
+    public function testBindPointsPoint2NotFound(): void
     {
         $graph = new Graph();
         $this->expectException(\InvalidArgumentException::class);
 
-        $pointFrom = 'Русский';
-        $notFoundPointTo = 'Остров Попова';
+        $point1 = 'Русский';
+        $notFoundPoint2 = 'Остров Попова';
 
-        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPointTo}");
+        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPoint2}");
 
-        $graph->addToGraph($pointFrom);
-        $graph->bindPoints($pointFrom, $notFoundPointTo, 10);
+        $graph->addToGraph($point1);
+        $graph->bindPoints($point1, $notFoundPoint2, 10);
     }
 
     public function testUnbindPointsCorrect(): void
     {
         $graph = new Graph();
 
-        $pointFrom = 'Русский';
-        $pointTo = 'Остров Попова';
+        $point1 = 'Русский';
+        $point2 = 'Остров Попова';
 
-        $graph->addToGraph($pointFrom);
-        $graph->addToGraph($pointTo);
+        $graph->addToGraph($point1);
+        $graph->addToGraph($point2);
 
-        $graph->bindPoints($pointFrom, $pointTo, 10);
-        $graph->unbindPoints($pointFrom, $pointTo);
+        $graph->bindPoints($point1, $point2, 10);
+        $graph->unbindPoints($point1, $point2);
 
         $expected = <<<EOL
         Всего в графе вершин: 2
-        '{$pointFrom}': 
-        '{$pointTo}': 
+        '{$point1}': 
+        '{$point2}': 
         
         EOL;
 
@@ -167,13 +165,13 @@ class GraphTest extends TestCase
         $graph = new Graph();
         $this->expectException(\InvalidArgumentException::class);
 
-        $pointFrom = 'Русский';
-        $pointTo = 'Остров Попова';
-        $this->expectExceptionMessage("Не существует маршрута из {$pointFrom} в {$pointTo}");
+        $point1 = 'Русский';
+        $point2 = 'Остров Попова';
+        $this->expectExceptionMessage("Не существует маршрута из {$point1} в {$point2}");
 
-        $graph->addToGraph($pointFrom);
-        $graph->addToGraph($pointTo);
-        $graph->unbindPoints($pointFrom, $pointTo);
+        $graph->addToGraph($point1);
+        $graph->addToGraph($point2);
+        $graph->unbindPoints($point1, $point2);
     }
 
     public function testUnbindPointsSamePoints(): void
@@ -181,39 +179,39 @@ class GraphTest extends TestCase
         $graph = new Graph();
         $this->expectException(\InvalidArgumentException::class);
 
-        $pointFrom = $pointTo = 'Русский';
+        $point1 = $point2 = 'Русский';
         $this->expectExceptionMessage('Нельзя указывать одну и ту же вершину');
 
-        $graph->addToGraph($pointTo);
-        $graph->unbindPoints($pointTo, $pointFrom);
+        $graph->addToGraph($point2);
+        $graph->unbindPoints($point2, $point1);
     }
 
-    public function testUnbindPointsPointFromNotFound(): void
+    public function testUnbindPointsPoint1NotFound(): void
     {
         $graph = new Graph();
         $this->expectException(\InvalidArgumentException::class);
 
-        $notFoundPointFrom = 'Русский';
-        $pointTo = 'Остров Попова';
+        $notFoundPoint1 = 'Русский';
+        $point2 = 'Остров Попова';
 
-        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPointFrom}");
+        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPoint1}");
 
-        $graph->addToGraph($pointTo);
-        $graph->unbindPoints($notFoundPointFrom, $pointTo);
+        $graph->addToGraph($point2);
+        $graph->unbindPoints($notFoundPoint1, $point2);
     }
 
-    public function testUnbindPointsPointToNotFound(): void
+    public function testUnbindPointsPoint2NotFound(): void
     {
         $graph = new Graph();
         $this->expectException(\InvalidArgumentException::class);
 
-        $pointFrom = 'Русский';
-        $notFoundPointTo = 'Остров Попова';
+        $point1 = 'Русский';
+        $notFoundPoint2 = 'Остров Попова';
 
-        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPointTo}");
+        $this->expectExceptionMessage("В графе нет вершины с названием {$notFoundPoint2}");
 
-        $graph->addToGraph($pointFrom);
-        $graph->unbindPoints($pointFrom, $notFoundPointTo);
+        $graph->addToGraph($point1);
+        $graph->unbindPoints($point1, $notFoundPoint2);
     }
 }
 

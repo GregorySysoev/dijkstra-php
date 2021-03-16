@@ -54,25 +54,26 @@ class Graph
         return $result;
     }
 
-    public function bindPoints(string $pointFrom, string $pointTo, int $distance): void
+    public function bindPoints(string $point1, string $point2, int $distance): void
     {
         if ($distance < 1) {
             throw new \InvalidArgumentException('Расстояние между вершинами должно быть не менее 1');
         }
 
-        $this->validatePointToPointFrom($pointFrom, $pointTo);
+        $this->validatePoint1Point2($point1, $point2);
 
-        $this->points[$pointFrom][$pointTo] = $distance;
+        $this->points[$point1][$point2] = $distance;
+        $this->points[$point2][$point1] = $distance;
     }
 
-    public function unbindPoints(string $pointFrom, string $pointTo): void
+    public function unbindPoints(string $point1, string $point2): void
     {
-        $this->validatePointToPointFrom($pointFrom, $pointTo);
+        $this->validatePoint1Point2($point1, $point2);
 
-        if (!isset($this->points[$pointFrom][$pointTo])) {
-            throw new \InvalidArgumentException("Не существует маршрута из {$pointFrom} в {$pointTo}");
+        if (!isset($this->points[$point1][$point2])) {
+            throw new \InvalidArgumentException("Не существует маршрута из {$point1} в {$point2}");
         }
-        unset($this->points[$pointFrom][$pointTo]);
+        unset($this->points[$point1][$point2], $this->points[$point2][$point1]);
     }
 
     public function getPoints(): array
@@ -80,18 +81,18 @@ class Graph
         return $this->points;
     }
 
-    public function validatePointToPointFrom(string $pointFrom, string $pointTo): void
+    public function validatePoint1Point2(string $point1, string $point2): void
     {
-        if ($pointFrom === $pointTo) {
+        if ($point1 === $point2) {
             throw new \InvalidArgumentException('Нельзя указывать одну и ту же вершину');
         }
 
-        if (!$this->graphContainsPoint($pointFrom)) {
-            throw new \InvalidArgumentException("В графе нет вершины с названием {$pointFrom}");
+        if (!$this->graphContainsPoint($point1)) {
+            throw new \InvalidArgumentException("В графе нет вершины с названием {$point1}");
         }
 
-        if (!$this->graphContainsPoint($pointTo)) {
-            throw new \InvalidArgumentException("В графе нет вершины с названием {$pointTo}");
+        if (!$this->graphContainsPoint($point2)) {
+            throw new \InvalidArgumentException("В графе нет вершины с названием {$point2}");
         }
     }
 
